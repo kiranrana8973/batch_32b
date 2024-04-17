@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 
-class ArithmeticScreen extends StatelessWidget {
+class ArithmeticScreen extends StatefulWidget {
   const ArithmeticScreen({super.key});
+
+  @override
+  State<ArithmeticScreen> createState() => _ArithmeticScreenState();
+}
+
+class _ArithmeticScreenState extends State<ArithmeticScreen> {
+// Delcare variables
+  int? first;
+  int? second;
+  int result = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +27,23 @@ class ArithmeticScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: Column(
           children: [
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              onChanged: (value) {
+                first = int.parse(value);
+              },
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Enter First No',
               ),
             ),
             const SizedBox(height: 8),
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              onChanged: (value) {
+                second = int.parse(value);
+              },
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Enter Second No',
               ),
@@ -35,7 +53,11 @@ class ArithmeticScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    result = first! + second!;
+                  });
+                },
                 child: const Text(
                   'Add',
                   style: TextStyle(
@@ -47,9 +69,9 @@ class ArithmeticScreen extends StatelessWidget {
             const SizedBox(height: 8),
 
             // Display informatuion
-            const Text(
-              'Sum is : 0',
-              style: TextStyle(
+            Text(
+              'Sum is : $result',
+              style: const TextStyle(
                 fontSize: 30,
               ),
             ),
