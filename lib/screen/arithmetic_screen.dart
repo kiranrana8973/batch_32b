@@ -13,6 +13,9 @@ class _ArithmeticScreenState extends State<ArithmeticScreen> {
   int? second;
   int result = 0;
 
+  // Create global key for form
+  final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,57 +28,68 @@ class _ArithmeticScreenState extends State<ArithmeticScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            TextField(
-              onChanged: (value) {
-                first = int.parse(value);
-              },
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter First No',
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              onChanged: (value) {
-                second = int.parse(value);
-              },
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter Second No',
-              ),
-            ),
-            const SizedBox(height: 8),
-            // Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    result = first! + second!;
-                  });
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                onChanged: (value) {
+                  first = int.parse(value);
                 },
-                child: const Text(
-                  'Add',
-                  style: TextStyle(
-                    fontSize: 25,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter First No',
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Enter first no";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 8),
+              TextFormField(
+                onChanged: (value) {
+                  second = int.parse(value);
+                },
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter Second No',
+                ),
+              ),
+              const SizedBox(height: 8),
+              // Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      setState(() {
+                        result = first! + second!;
+                      });
+                    }
+                  },
+                  child: const Text(
+                    'Add',
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 8),
+              const SizedBox(height: 8),
 
-            // Display informatuion
-            Text(
-              'Sum is : $result',
-              style: const TextStyle(
-                fontSize: 30,
+              // Display informatuion
+              Text(
+                'Sum is : $result',
+                style: const TextStyle(
+                  fontSize: 30,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
